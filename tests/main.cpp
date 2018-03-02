@@ -15,6 +15,14 @@ int distance(int a, int b, int x, int y) {
 	return std::abs(a - x) + std::abs(b - y);
 }
 
+/**
+ * Calculates the fitness of assigning ride R to car C, given the current time of car C
+ * @param  R Ride being checked
+ * @param  C Car being checked
+ * @param  T Final timestamp
+ * @param  B Bonus points
+ * @return   Fitness as a double
+ */
 double fitness(Ride R, Car C, int T, int B) {
 	if(C.t + distance(C.x, C.y, R.a, R.b) + R.length > R.f
 			|| R.f > T) {
@@ -61,6 +69,8 @@ int main() {
 	std::vector<bool> cars_done(cars.size(), 1);
 	std::vector<std::vector<int>> cars2rides(cars.size(), std::vector<int>());
 	int finished_cars = 0;
+
+//TODO: Method to calculate overall fitness of assignments.
 
 	while(finished_cars != cars.size()) {
 		for(int i = 0; i < cars.size(); i++) {
