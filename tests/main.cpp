@@ -20,9 +20,14 @@ double fitness(Ride R, Car C, int T, int B) {
 			|| R.f > T) {
 		return 0;
 	}
+
+	/**
+	 * Checking if bonus could apply
+	 * i.e. time needed to reach start point is less than start point time
+	 */
 	int wb = 0;
 	if(C.t + distance(C.x, C.y, R.a, R.b) < R.s) {
-		wb = BONUS_WEIGHT; 
+		wb = BONUS_WEIGHT;
 	}
 
 	return DIST_WEIGHT*R.length + wb*B - WAIT_WEIGHT*wb*(R.s - distance(C.x, C.y, R.a, R.b) - C.t);
@@ -37,8 +42,8 @@ int main() {
 	int R, C, F, N, B, T;
 	file >> R >> C >> F >> N >> B >> T;
 
-	
-	std::vector<Car> cars;		
+
+	std::vector<Car> cars;
 	std::vector<Ride> rides;
 	for(int i = 0; i < F; i++) {
 		Car C(0, 0, 0);
@@ -60,7 +65,7 @@ int main() {
 	while(finished_cars != cars.size()) {
 		for(int i = 0; i < cars.size(); i++) {
 			if(cars_done[i]) continue;
-			int max_fitness = 0;	
+			int max_fitness = 0;
 			int max_index = 0;
 
 			for(int j = 0; j < rides.size(); j++) {
@@ -71,28 +76,28 @@ int main() {
 					max_index = j;
 					max_fitness = current_fitness;
 
-				}	
+				}
 			}
 
 			if(max_fitness == 0) {
 				cars_done[i] = 1;
 				finished_cars++;
 				break;
-			}	
+			}
 
 			available[max_index] = 0;
 			cars2rides[i].push_back(max_index);
 
-			cars[i].t = cars[i].t + distance(cars[i].x, cars[i].y, rides[max_index].a, rides[max_index].b) 
+			cars[i].t = cars[i].t + distance(cars[i].x, cars[i].y, rides[max_index].a, rides[max_index].b)
 				+ rides[max_index].length;
 			cars[i].x = rides[max_index].x;
 			cars[i].y = rides[max_index].y;
 		}
 	}
-	
+
 	std::ofstream out_file("outfile.txt");
 	for(int i = 0; i < cars2rides.size(); i++) {
-		out_file << cars2rides[i].size();	
+		out_file << cars2rides[i].size();
 		for(int j = 0; j < cars2rides[i].size(); j++) {
 			out_file << " " << cars2rides[i][j];
 		}
